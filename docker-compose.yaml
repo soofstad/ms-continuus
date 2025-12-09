@@ -1,10 +1,9 @@
 services:
-
   ms-continuus:
     image: ghcr.io/equinor/ms-continuus
     build: .
     environment:
-      GITHUB_ORG: equinor
+      GITHUB_ORG: soofstad
       BLOB_CONTAINER: github-archives
       WEEKLY_RETENTION: 60
       GITHUB_TOKEN: ${GITHUB_TOKEN}

@@ -1,22 +1,26 @@
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
-
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS develop
 WORKDIR /app
-ADD *.csproj ./
+ADD MSContinuus.csproj ./
 RUN dotnet restore
-
 ADD src LICENSE README.md ./
-RUN dotnet publish -c Release -o out
+RUN dotnet build
+#ENTRYPOINT ["ls", "-la", "/app/bin/Debug/net10.0/"]
+#ENTRYPOINT ["dotnet", "watch" ,"run", "--project", "./MSContinuus.csproj"]
+ENTRYPOINT ["dotnet", "--info"]
 
+FROM develop as build
+RUN dotnet build "./MSContinuus.csproj" -o "/app/build"
+RUN dotnet publish "./MSContinuus.csproj" -o "/app/publish"
 
-FROM mcr.microsoft.com/dotnet/runtime:5.0 AS run
+FROM mcr.microsoft.com/dotnet/runtime:10.0 AS run
 LABEL org.opencontainers.image.source="https://github.com/equinor/ms-continuus"
 WORKDIR /app
 
-COPY --from=build /app/out .
-ADD src/version /app/src/version
+COPY --from=build /app/publish .
+ADD src/version /app/version
 
-RUN groupadd -g 1000 dotnet-non-root-group
-RUN useradd -u 1000 -g dotnet-non-root-group dotnet-non-root-user && chown -R 1000 /app
-USER 1000
+#RUN groupadd -g 1000 dotnet-non-root-group
+#RUN useradd -u 1000 -g dotnet-non-root-group dotnet-non-root-user && chown -R 1000 /app
+#USER 1000
 
-CMD ["dotnet", "ms-continuus.dll"]
+ENTRYPOINT ["dotnet", "MSContinuus.dll"]

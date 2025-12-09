@@ -1,8 +1,10 @@
 services:
   ms-continuus:
+    build:
+      target: develop
     environment:
       # GITHUB_URL: http://mock-api:5000
-      STORAGE_ACCOUNT_CON_STRING: DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://storage-emulator:10000/devstoreaccount1;
+      STORAGE_ACCOUNT_CON_STRING: "DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://storage-emulator:10000/devstoreaccount1;"
     depends_on:
       - storage-emulator
 
@@ -12,7 +14,7 @@ services:
       - "./blobStorage:/data"
     ports:
       - "10000:10000"
-    command: ["azurite","--blobHost", "0.0.0.0", "--location", "/data"]
+    command: [ "azurite","--blobHost", "0.0.0.0", "--location", "/data" ]
 
   # mock-api:
   #   build: mock_api

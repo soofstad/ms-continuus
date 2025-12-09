@@ -1,6 +1,7 @@
 .idea
 .vscode
 blobStorage
+*.sln.DotSettings.user
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -133,7 +134,7 @@ dmypy.json
 .pyre/
 
 # C# stuff
-/bin/
-/obj/
-/tmp/
+bin
+obj
+tmp
 mock_api/archive1
